@@ -1,0 +1,21 @@
+{
+  "name": "tanstack-web3-starter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Full-stack typed web3 starter: TanStack Start + wagmi + Hardhat 3, with contract-to-frontend codegen.",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@10.25.0",
+  "scripts": {
+    "chain": "pnpm --filter contracts run chain",
+    "compile": "pnpm --filter contracts run compile",
+    "deploy:local": "pnpm --filter contracts run deploy",
+    "codegen": "pnpm --filter web run codegen",
+    "sync": "pnpm deploy:local && pnpm codegen",
+    "dev": "pnpm --filter web run dev",
+    "build": "pnpm --filter web run build",
+    "typecheck": "pnpm --filter web run typecheck"
+  }
+}

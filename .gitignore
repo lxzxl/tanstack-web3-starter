@@ -1,0 +1,26 @@
+# dependencies
+node_modules
+
+# builds
+dist
+.output
+.nitro
+.tanstack-start
+.vinxi
+
+# hardhat
+packages/contracts/artifacts
+packages/contracts/cache
+packages/contracts/deployments/localhost.json
+
+# tanstack router codegen (regenerated on dev/build)
+apps/web/src/routeTree.gen.ts
+
+# env / local
+.env
+.env.local
+.env.*.local
+
+# misc
+*.log
+.DS_Store
