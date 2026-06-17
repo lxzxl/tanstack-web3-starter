@@ -106,9 +106,12 @@ wagmi state is persisted to a cookie and read on the server before render
 [wagmi × TanStack Start playground](https://github.com/wevm/wagmi/tree/main/playgrounds/tanstack-start).
 
 ### 3. Pluggable backend
-TanStack Start defaults to a **Nitro node server** — no database, no host lock-in.
-Add server functions/routes when you need an API, and bring your own DB and host.
-See [Customizing](#customizing).
+No host or database is baked in. Need backend logic — an RPC call with a secret key,
+your own API, a DB query? Add a
+[server function](https://tanstack.com/start/latest/docs/framework/react/guide/server-functions)
+— see [`apps/web/src/server.ts`](apps/web/src/server.ts) for a working example that
+reads a block **server-side** (shown on the page). No separate service required.
+Deploy to any host via its adapter; see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ---
 
@@ -174,9 +177,9 @@ separate service. Nothing here assumes a database; drop in Drizzle/Prisma + your
 DB inside server functions when you need persistence.
 
 ### Pick a host
-The default Vite config targets a Node server. To deploy elsewhere, add the host's
-adapter in `apps/web/vite.config.ts` (e.g. `@cloudflare/vite-plugin`, or the
-Vercel/Netlify presets) — the rest of the app is unchanged.
+No deploy adapter is baked in — the app stays host-agnostic. To ship to Cloudflare,
+Vercel, Netlify, or self-hosted Node, add your host's adapter as described in
+[DEPLOYMENT.md](DEPLOYMENT.md).
 
 ---
 

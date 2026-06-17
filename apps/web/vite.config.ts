@@ -4,11 +4,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   server: { port: 3000 },
-  plugins: [
-    // TanStack Start (includes the router plugin). No deploy-target binding here —
-    // defaults to a Nitro node server. Swap in a host adapter (Cloudflare, Vercel,
-    // Netlify…) when you pick one. See README "Pluggable backend".
-    tanstackStart(),
-    viteReact(),
-  ],
+  // Host-agnostic by default — no deploy adapter baked in. To deploy, add the
+  // adapter for your target (Cloudflare / Vercel / Netlify / Node). See DEPLOYMENT.md.
+  plugins: [tanstackStart(), viteReact()],
 });
