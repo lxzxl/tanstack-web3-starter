@@ -23,8 +23,10 @@ jobs:
       - name: Contract tests (Hardhat 3)
         run: pnpm test
 
-      - name: Typecheck
-        run: pnpm typecheck
-
+      # Build first — it runs codegen and generates the route tree, which the
+      # typecheck depends on (both are gitignored, generated artifacts).
       - name: Build (codegen + SSR)
         run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
