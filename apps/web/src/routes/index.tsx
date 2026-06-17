@@ -7,12 +7,15 @@ import {
   useReadCounterCount,
   useWriteCounterIncrement,
 } from "../generated";
+import { getServerBlockNumber } from "../server";
 
 export const Route = createFileRoute("/")({
+  loader: () => getServerBlockNumber(),
   component: Home,
 });
 
 function Home() {
+  const serverBlock = Route.useLoaderData();
   return (
     <main className="container">
       <header className="header">
@@ -31,8 +34,21 @@ function Home() {
       <Counter />
 
       <footer className="footer">
-        Edit <code>packages/contracts/contracts/Counter.sol</code>, run{" "}
-        <code>pnpm sync</code>, and the typed hooks below regenerate.
+        <p>
+          Edit <code>packages/contracts/contracts/Counter.sol</code>, run{" "}
+          <code>pnpm sync</code>, and the typed hooks regenerate.
+        </p>
+        <p>
+          Latest block, read on the server via a{" "}
+          <a
+            href="https://tanstack.com/start/latest/docs/framework/react/server-functions"
+            target="_blank"
+            rel="noreferrer"
+          >
+            server function
+          </a>
+          : <code>{serverBlock ?? "—"}</code>
+        </p>
       </footer>
     </main>
   );

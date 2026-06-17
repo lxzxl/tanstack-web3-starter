@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "compile": "hardhat compile",
+    "test": "hardhat test",
     "chain": "hardhat node",
     "deploy": "hardhat compile && node scripts/deploy.ts",
     "fund": "node scripts/fund.ts",

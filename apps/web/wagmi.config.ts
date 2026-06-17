@@ -23,6 +23,8 @@ export default defineConfig({
       project: contractsDir,
       // bake the deployed address into the generated hooks
       deployments,
+      // skip Solidity test contracts (*.t.sol) — don't generate hooks for them
+      exclude: ["build-info/**", "*.dbg.json", "*.t.sol/**"],
     }),
     react(),
   ],
