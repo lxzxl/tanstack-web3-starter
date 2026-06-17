@@ -72,7 +72,7 @@ import { nitro } from "nitro/vite";
 pnpm --filter web build && pnpm --filter web start
 ```
 
-> 🐛 **Heads up:** with the current Nitro v3 *beta*, the plain-Node target threw a
+> 🐛 **Heads up:** with the current Nitro v3 _beta_, the plain-Node target threw a
 > `mod.fetch is not a function` at runtime in our testing. If you need self-hosted
 > Node today, pin a known-good Nitro version (check the hosting guide above) or use
 > the Cloudflare / Vercel paths, which are more mature.

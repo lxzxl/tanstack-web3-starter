@@ -2,11 +2,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
 import { type BaseError, useAccount, useWaitForTransactionReceipt } from "wagmi";
-import {
-  counterAddress,
-  useReadCounterCount,
-  useWriteCounterIncrement,
-} from "../generated";
+import { counterAddress, useReadCounterCount, useWriteCounterIncrement } from "../generated";
 import { getServerBlockNumber } from "../server";
 
 export const Route = createFileRoute("/")({
@@ -21,9 +17,7 @@ function Home() {
       <header className="header">
         <div>
           <h1>TanStack Web3 Starter</h1>
-          <p className="subtitle">
-            TanStack Start · wagmi · Hardhat 3 — typed end-to-end
-          </p>
+          <p className="subtitle">TanStack Start · wagmi · Hardhat 3 — typed end-to-end</p>
         </div>
         {/* Wallet UI is client-only to avoid SSR hydration mismatch */}
         <ClientOnly fallback={null}>
@@ -35,8 +29,8 @@ function Home() {
 
       <footer className="footer">
         <p>
-          Edit <code>packages/contracts/contracts/Counter.sol</code>, run{" "}
-          <code>pnpm sync</code>, and the typed hooks regenerate.
+          Edit <code>packages/contracts/contracts/Counter.sol</code>, run <code>pnpm sync</code>,
+          and the typed hooks regenerate.
         </p>
         <p>
           Latest block, read on the server via a{" "}
@@ -63,8 +57,9 @@ function Counter() {
     error: writeError,
     writeContract,
   } = useWriteCounterIncrement();
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({ hash });
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash,
+  });
 
   // A read error almost always means no Counter is deployed at `counterAddress`
   // on the connected chain — i.e. the node was restarted, or you haven't run
@@ -79,32 +74,25 @@ function Counter() {
   return (
     <section className="card">
       <span className="card-label">Counter.count()</span>
-      <span className="count">
-        {isPending ? "…" : error ? "—" : count?.toString()}
-      </span>
+      <span className="count">{isPending ? "…" : error ? "—" : count?.toString()}</span>
       <button
         type="button"
         className="btn"
         disabled={!isConnected || notDeployed || isWriting || isConfirming}
         onClick={() => writeContract({})}
       >
-        {isWriting
-          ? "Confirm in wallet…"
-          : isConfirming
-            ? "Mining…"
-            : "increment()"}
+        {isWriting ? "Confirm in wallet…" : isConfirming ? "Mining…" : "increment()"}
       </button>
       {!isConnected && (
         <p className="hint">
-          Connect a wallet on the <strong>Hardhat (local)</strong> network to
-          send transactions.
+          Connect a wallet on the <strong>Hardhat (local)</strong> network to send transactions.
         </p>
       )}
       {notDeployed && (
         <p className="hint hint-error">
-          No <code>Counter</code> at <code>{counterAddress}</code> on this chain.
-          Run <code>pnpm chain</code> then <code>pnpm sync</code> to deploy it and
-          regenerate the address.
+          No <code>Counter</code> at <code>{counterAddress}</code> on this chain. Run{" "}
+          <code>pnpm chain</code> then <code>pnpm sync</code> to deploy it and regenerate the
+          address.
         </p>
       )}
       {writeError && !notDeployed && (

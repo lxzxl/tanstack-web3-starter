@@ -2,11 +2,7 @@
 //   node scripts/wait-port.mjs <port> [host]
 import net from "node:net";
 
-export function waitPort(
-  port,
-  host = "127.0.0.1",
-  { timeoutMs = 60_000, intervalMs = 250 } = {},
-) {
+export function waitPort(port, host = "127.0.0.1", { timeoutMs = 60_000, intervalMs = 250 } = {}) {
   const start = Date.now();
   return new Promise((resolve, reject) => {
     const tryConnect = () => {

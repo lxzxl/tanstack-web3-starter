@@ -44,6 +44,7 @@ pnpm chain        # terminal 1 — Hardhat 3 node (chainId 31337)
 pnpm sync         # terminal 2 — deploy Counter + generate typed hooks
 pnpm dev          # → http://localhost:3000
 ```
+
 </details>
 
 > Optional: `cp apps/web/.env.example apps/web/.env` and add a WalletConnect
@@ -77,8 +78,8 @@ that's expected, not an error. To use the local chain:
 > fresh account instead, or use **MetaMask / Rabby** for local development.
 >
 > 🔁 **After restarting the chain** (e.g. re-running `pnpm dev:all`), the fresh chain
-> resets account nonces to 0 but your wallet still has the old one → *"Nonce too
-> high"* on the next tx. Reset it: MetaMask → Settings → Advanced → **Clear activity
+> resets account nonces to 0 but your wallet still has the old one → _"Nonce too
+> high"_ on the next tx. Reset it: MetaMask → Settings → Advanced → **Clear activity
 > tab data** (Rabby: **Clear pending**). To avoid it entirely, keep one `pnpm chain`
 > running and use `pnpm dev` for the web, so chain state persists across restarts.
 
@@ -87,6 +88,7 @@ that's expected, not an error. To use the local chain:
 ## How it works (the three things that matter)
 
 ### 1. Typed contract → frontend codegen
+
 `apps/web/wagmi.config.ts` runs [`@wagmi/cli`](https://wagmi.sh/cli) over the Hardhat 3
 artifacts and the deployed address, emitting `apps/web/src/generated.ts`:
 
@@ -100,12 +102,14 @@ Change `Counter.sol`, run `pnpm sync`, and the hooks **and their types** update.
 hand-written ABIs, no copy-pasted addresses.
 
 ### 2. SSR-safe wallet hydration
+
 wagmi state is persisted to a cookie and read on the server before render
 (`getWagmiStateSSR` in `apps/web/src/config.ts`), so the page hydrates
 **already-connected** — no flash of "disconnected". Adapted from the official
 [wagmi × TanStack Start playground](https://github.com/wevm/wagmi/tree/main/playgrounds/tanstack-start).
 
 ### 3. Pluggable backend
+
 No host or database is baked in. Need backend logic — an RPC call with a secret key,
 your own API, a DB query? Add a
 [server function](https://tanstack.com/start/latest/docs/framework/react/guide/server-functions)
@@ -137,16 +141,16 @@ Deploy to any host via its adapter; see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Scripts
 
-| Command | What it does |
-| --- | --- |
-| `pnpm chain` | Start a local Hardhat 3 node (chainId 31337) |
-| `pnpm deploy:local` | Compile + deploy `Counter` to the local node, write its address |
-| `pnpm fund <addr> [eth]` | Send test ETH from the node to any address (default 100) |
-| `pnpm codegen` | Generate typed hooks from artifacts + deployed address |
-| `pnpm sync` | `deploy:local` **+** `codegen` — run after editing a contract |
-| `pnpm dev` | Run the web app (SSR dev server) |
-| `pnpm build` | Production build (client + Nitro server) |
-| `pnpm typecheck` | `tsc --noEmit` over the web app |
+| Command                  | What it does                                                    |
+| ------------------------ | --------------------------------------------------------------- |
+| `pnpm chain`             | Start a local Hardhat 3 node (chainId 31337)                    |
+| `pnpm deploy:local`      | Compile + deploy `Counter` to the local node, write its address |
+| `pnpm fund <addr> [eth]` | Send test ETH from the node to any address (default 100)        |
+| `pnpm codegen`           | Generate typed hooks from artifacts + deployed address          |
+| `pnpm sync`              | `deploy:local` **+** `codegen` — run after editing a contract   |
+| `pnpm dev`               | Run the web app (SSR dev server)                                |
+| `pnpm build`             | Production build (client + Nitro server)                        |
+| `pnpm typecheck`         | `tsc --noEmit` over the web app                                 |
 
 > Why `deploy:local`/`sync` and not `deploy`/`setup`? Those are **reserved pnpm
 > subcommands** (`pnpm deploy`, `pnpm setup`) and would shadow the scripts.
@@ -156,6 +160,7 @@ Deploy to any host via its adapter; see [DEPLOYMENT.md](DEPLOYMENT.md).
 ## Customizing
 
 ### Swap the wallet UI
+
 This starter uses RainbowKit's `getDefaultConfig`. To switch to
 [ConnectKit](https://docs.family.co/connectkit) or
 [Reown AppKit](https://reown.com/appkit), replace the config in
@@ -163,6 +168,7 @@ This starter uses RainbowKit's `getDefaultConfig`. To switch to
 **The SSR cookie wiring stays exactly the same** — it's wallet-UI agnostic.
 
 ### Add a real network
+
 1. Add the chain + a transport in `apps/web/src/config.ts`.
 2. Deploy your contract there and put the address in `apps/web/wagmi.config.ts`
    under `deployments` (extend it to a per-chain `{ [chainId]: address }` map if
@@ -170,6 +176,7 @@ This starter uses RainbowKit's `getDefaultConfig`. To switch to
 3. Set `VITE_WALLETCONNECT_PROJECT_ID` in `apps/web/.env`.
 
 ### Add a backend / database
+
 TanStack Start
 [server functions](https://tanstack.com/start/latest/docs/framework/react/server-functions)
 and server routes live next to your routes — add an API without standing up a
@@ -177,6 +184,7 @@ separate service. Nothing here assumes a database; drop in Drizzle/Prisma + your
 DB inside server functions when you need persistence.
 
 ### Pick a host
+
 No deploy adapter is baked in — the app stays host-agnostic. To ship to Cloudflare,
 Vercel, Netlify, or self-hosted Node, add your host's adapter as described in
 [DEPLOYMENT.md](DEPLOYMENT.md).
@@ -185,14 +193,14 @@ Vercel, Netlify, or self-hosted Node, add your host's adapter as described in
 
 ## Stack
 
-| Layer | Choice |
-| --- | --- |
-| Framework | TanStack Start (SSR) + TanStack Router + Vite |
-| Chain interaction | wagmi + viem |
-| Wallet UI | RainbowKit |
-| Contracts | Hardhat 3 (Solidity, viem-first) |
-| Codegen | `@wagmi/cli` (hardhat + react plugins) |
-| Package manager | pnpm workspaces |
+| Layer             | Choice                                        |
+| ----------------- | --------------------------------------------- |
+| Framework         | TanStack Start (SSR) + TanStack Router + Vite |
+| Chain interaction | wagmi + viem                                  |
+| Wallet UI         | RainbowKit                                    |
+| Contracts         | Hardhat 3 (Solidity, viem-first)              |
+| Codegen           | `@wagmi/cli` (hardhat + react plugins)        |
+| Package manager   | pnpm workspaces                               |
 
 ## License
 

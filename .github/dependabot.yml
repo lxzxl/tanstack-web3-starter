@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # The web3 stack here is fast-moving (TanStack Start, wagmi, Hardhat 3, Vite 8…),
+  # so keep deps fresh — grouped to keep the PR noise down.
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      non-major:
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly

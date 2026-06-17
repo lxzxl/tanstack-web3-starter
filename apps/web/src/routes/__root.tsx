@@ -1,11 +1,7 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { type QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  createRootRouteWithContext,
-  HeadContent,
-  Scripts,
-} from "@tanstack/react-router";
+import { createRootRouteWithContext, HeadContent, Scripts } from "@tanstack/react-router";
 import * as React from "react";
 import { deserialize, type State, WagmiProvider } from "wagmi";
 import { getConfig, getWagmiStateSSR } from "../config";

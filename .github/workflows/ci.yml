@@ -20,6 +20,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Lint (oxlint)
+        run: pnpm lint
+
+      - name: Format check (oxfmt)
+        run: pnpm format:check
+
       - name: Contract tests (Hardhat 3)
         run: pnpm test
 

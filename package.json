@@ -2,12 +2,8 @@
   "name": "tanstack-web3-starter",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "description": "Full-stack typed web3 starter: TanStack Start + wagmi + Hardhat 3, with contract-to-frontend codegen.",
-  "engines": {
-    "node": ">=22"
-  },
-  "packageManager": "pnpm@10.25.0",
+  "type": "module",
   "scripts": {
     "chain": "pnpm --filter contracts run chain",
     "compile": "pnpm --filter contracts run compile",
@@ -21,9 +17,22 @@
     "dev:ready": "node scripts/wait-port.mjs 8545 && pnpm sync && pnpm dev",
     "build": "pnpm --filter web run build",
     "typecheck": "pnpm --filter web run typecheck",
-    "test": "pnpm --filter contracts run test"
+    "test": "pnpm --filter contracts run test",
+    "lint": "oxlint",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
   },
+  "devDependencies": {
+    "oxfmt": "^0.54.0",
+    "oxlint": "^1.69.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@10.25.0",
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

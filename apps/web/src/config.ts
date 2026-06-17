@@ -1,13 +1,7 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
-import {
-  cookieStorage,
-  cookieToInitialState,
-  createStorage,
-  http,
-  serialize,
-} from "wagmi";
+import { cookieStorage, cookieToInitialState, createStorage, http, serialize } from "wagmi";
 import { base, hardhat, mainnet, sepolia } from "wagmi/chains";
 
 /**
