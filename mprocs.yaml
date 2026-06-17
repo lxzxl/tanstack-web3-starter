@@ -1,0 +1,8 @@
+# One terminal, tab between services:  pnpm dev:tui   (needs mprocs — `brew install mprocs`)
+# Switch focus with the arrow keys (or j / k). Quit with Ctrl-a then q.
+procs:
+  chain:
+    shell: pnpm chain
+  app:
+    # waits for the chain, deploys + regenerates typed hooks, then starts Vite
+    shell: pnpm dev:ready

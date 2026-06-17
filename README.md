@@ -14,20 +14,71 @@ Edit a Solidity contract, run one command, and fully-typed React hooks regenerat
 
 ```bash
 pnpm install
-
-# terminal 1 — local chain (Hardhat 3 node, chainId 31337)
-pnpm chain
-
-# terminal 2 — deploy Counter + generate typed hooks, then run the app
-pnpm sync
-pnpm dev          # → http://localhost:3000
+pnpm dev:all      # chain + deploy + codegen + web — one terminal
 ```
 
-Then connect a wallet on the **Hardhat (local)** network and click `increment()`.
+Open http://localhost:3000, connect a wallet on the **Hardhat (local)** network, and click `increment()`.
+
+### One terminal, all services
+
+`pnpm dev:all` runs the local chain and the web app together — a small zero-dep
+Node script ([`scripts/dev.mjs`](scripts/dev.mjs), no `concurrently`/`wait-on`),
+output prefixed per service. `Ctrl-C` stops everything. It waits for the chain,
+runs `pnpm sync` (deploy + codegen), then starts Vite. It manages its own chain,
+so don't run `pnpm chain` separately.
+
+Prefer **switchable panes per service**? Install [mprocs](https://github.com/pvolok/mprocs)
+(`brew install mprocs`) and run:
+
+```bash
+pnpm dev:tui      # sidebar of services (chain · app) — switch with arrow keys
+```
+
+<details>
+<summary>Or run each step manually (two terminals)</summary>
+
+```bash
+pnpm chain        # terminal 1 — Hardhat 3 node (chainId 31337)
+pnpm sync         # terminal 2 — deploy Counter + generate typed hooks
+pnpm dev          # → http://localhost:3000
+```
+</details>
 
 > Optional: `cp apps/web/.env.example apps/web/.env` and add a WalletConnect
 > `projectId` (free at [cloud.reown.com](https://cloud.reown.com)) to enable
 > WalletConnect wallets. Browser-injected wallets (MetaMask etc.) work without it.
+
+### Connect your wallet to the local chain
+
+The demo runs against the local Hardhat node (chainId **31337**). On first connect
+your wallet is usually on another network, so RainbowKit shows **"Wrong network"** —
+that's expected, not an error. To use the local chain:
+
+1. Make sure `pnpm chain` is running.
+2. Click the network button → **Hardhat**. Your wallet switches to (or adds)
+   `http://127.0.0.1:8545`, chainId 31337. If it won't add automatically, add a
+   network manually with those values (currency symbol: `ETH`).
+3. **Get some test ETH** — your account starts with 0 ETH on the local chain, so it
+   can't pay gas. Two options:
+   - **Fund your own account (any wallet):** copy your address, then
+     ```bash
+     pnpm fund 0xYourAddress        # sends 100 test ETH from the node
+     ```
+   - **Import Hardhat's pre-funded account #0** (MetaMask / Rabby): private key
+     `0xac0974…ff80` (address `0xf39F…2266`, 10,000 ETH — also the `Counter` deployer).
+
+> ⚠️ That private key is **public** — it ships with every Hardhat/Anvil install.
+> Never use it on a real network or send real funds to it.
+>
+> 🛑 **Exchange-integrated wallets (OKX, Binance Wallet) block the public dev key**
+> with a compliance/"risk" warning and won't sign. Use `pnpm fund` with your own
+> fresh account instead, or use **MetaMask / Rabby** for local development.
+>
+> 🔁 **After restarting the chain** (e.g. re-running `pnpm dev:all`), the fresh chain
+> resets account nonces to 0 but your wallet still has the old one → *"Nonce too
+> high"* on the next tx. Reset it: MetaMask → Settings → Advanced → **Clear activity
+> tab data** (Rabby: **Clear pending**). To avoid it entirely, keep one `pnpm chain`
+> running and use `pnpm dev` for the web, so chain state persists across restarts.
 
 ---
 
@@ -70,7 +121,7 @@ See [Customizing](#customizing).
 │  │  ├─ routes/
 │  │  │  ├─ __root.tsx        # providers: Wagmi → QueryClient → RainbowKit
 │  │  │  └─ index.tsx         # Counter demo: typed hooks + <ConnectButton/>
-│  │  └─ generated.ts         # ⚡ generated typed hooks (committed; `pnpm codegen`)
+│  │  └─ generated.ts         # ⚡ generated typed hooks (gitignored; auto-run on dev/build)
 │  └─ wagmi.config.ts         # codegen: reads ../../packages/contracts artifacts + address
 └─ packages/contracts/        # Hardhat 3
    ├─ contracts/Counter.sol
@@ -85,6 +136,7 @@ See [Customizing](#customizing).
 | --- | --- |
 | `pnpm chain` | Start a local Hardhat 3 node (chainId 31337) |
 | `pnpm deploy:local` | Compile + deploy `Counter` to the local node, write its address |
+| `pnpm fund <addr> [eth]` | Send test ETH from the node to any address (default 100) |
 | `pnpm codegen` | Generate typed hooks from artifacts + deployed address |
 | `pnpm sync` | `deploy:local` **+** `codegen` — run after editing a contract |
 | `pnpm dev` | Run the web app (SSR dev server) |

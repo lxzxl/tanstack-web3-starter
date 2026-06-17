@@ -13,8 +13,9 @@ packages/contracts/artifacts
 packages/contracts/cache
 packages/contracts/deployments/localhost.json
 
-# tanstack router codegen (regenerated on dev/build)
+# generated code (regenerated on dev/build via predev/prebuild codegen)
 apps/web/src/routeTree.gen.ts
+apps/web/src/generated.ts
 
 # env / local
 .env

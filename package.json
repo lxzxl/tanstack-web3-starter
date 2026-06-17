@@ -12,9 +12,13 @@
     "chain": "pnpm --filter contracts run chain",
     "compile": "pnpm --filter contracts run compile",
     "deploy:local": "pnpm --filter contracts run deploy",
+    "fund": "pnpm --filter contracts run fund",
     "codegen": "pnpm --filter web run codegen",
     "sync": "pnpm deploy:local && pnpm codegen",
     "dev": "pnpm --filter web run dev",
+    "dev:all": "node scripts/dev.mjs",
+    "dev:tui": "mprocs",
+    "dev:ready": "node scripts/wait-port.mjs 8545 && pnpm sync && pnpm dev",
     "build": "pnpm --filter web run build",
     "typecheck": "pnpm --filter web run typecheck"
   }

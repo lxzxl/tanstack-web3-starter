@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "pnpm run codegen",
     "dev": "vite",
+    "prebuild": "pnpm run codegen",
     "build": "vite build",
     "preview": "vite preview",
     "codegen": "wagmi generate",

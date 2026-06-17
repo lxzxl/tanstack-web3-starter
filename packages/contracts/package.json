@@ -7,6 +7,7 @@
     "compile": "hardhat compile",
     "chain": "hardhat node",
     "deploy": "hardhat compile && node scripts/deploy.ts",
+    "fund": "node scripts/fund.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

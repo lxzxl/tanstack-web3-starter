@@ -1,8 +1,12 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
-import { useAccount, useWaitForTransactionReceipt } from "wagmi";
-import { useReadCounterCount, useWriteCounterIncrement } from "../generated";
+import { type BaseError, useAccount, useWaitForTransactionReceipt } from "wagmi";
+import {
+  counterAddress,
+  useReadCounterCount,
+  useWriteCounterIncrement,
+} from "../generated";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -36,14 +40,20 @@ function Home() {
 
 function Counter() {
   const { isConnected } = useAccount();
-  const { data: count, isPending: isReading, refetch } = useReadCounterCount();
+  const { data: count, error, isPending, refetch } = useReadCounterCount();
   const {
     data: hash,
     isPending: isWriting,
+    error: writeError,
     writeContract,
   } = useWriteCounterIncrement();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({ hash });
+
+  // A read error almost always means no Counter is deployed at `counterAddress`
+  // on the connected chain — i.e. the node was restarted, or you haven't run
+  // `pnpm sync` yet to deploy + regenerate the baked address.
+  const notDeployed = !!error && !isPending;
 
   // Refetch the on-chain count once the increment tx confirms.
   React.useEffect(() => {
@@ -54,12 +64,12 @@ function Counter() {
     <section className="card">
       <span className="card-label">Counter.count()</span>
       <span className="count">
-        {isReading ? "…" : (count?.toString() ?? "—")}
+        {isPending ? "…" : error ? "—" : count?.toString()}
       </span>
       <button
         type="button"
         className="btn"
-        disabled={!isConnected || isWriting || isConfirming}
+        disabled={!isConnected || notDeployed || isWriting || isConfirming}
         onClick={() => writeContract({})}
       >
         {isWriting
@@ -72,6 +82,20 @@ function Counter() {
         <p className="hint">
           Connect a wallet on the <strong>Hardhat (local)</strong> network to
           send transactions.
+        </p>
+      )}
+      {notDeployed && (
+        <p className="hint hint-error">
+          No <code>Counter</code> at <code>{counterAddress}</code> on this chain.
+          Run <code>pnpm chain</code> then <code>pnpm sync</code> to deploy it and
+          regenerate the address.
+        </p>
+      )}
+      {writeError && !notDeployed && (
+        <p className="hint hint-error">
+          {/nonce too (high|low)|invalid nonce/i.test(writeError.message)
+            ? "Wallet nonce is out of sync — the chain was restarted. Reset it (MetaMask: Settings → Advanced → Clear activity tab data), then retry."
+            : ((writeError as BaseError).shortMessage ?? writeError.message)}
         </p>
       )}
     </section>
