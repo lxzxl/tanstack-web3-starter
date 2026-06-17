@@ -1,5 +1,7 @@
 # TanStack Web3 Starter
 
+[![CI](https://github.com/lxzxl/tanstack-web3-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/lxzxl/tanstack-web3-starter/actions/workflows/ci.yml)
+
 A full-stack, **typed end-to-end** web3 starter:
 
 **[TanStack Start](https://tanstack.com/start) (SSR) · [wagmi](https://wagmi.sh) + [viem](https://viem.sh) · [RainbowKit](https://www.rainbowkit.com) · [Hardhat 3](https://hardhat.org)**
