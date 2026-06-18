@@ -75,7 +75,10 @@ that's expected, not an error. To use the local chain:
 >
 > 🛑 **Exchange-integrated wallets (OKX, Binance Wallet) block the public dev key**
 > with a compliance/"risk" warning and won't sign. Use `pnpm fund` with your own
-> fresh account instead, or use **MetaMask / Rabby** for local development.
+> fresh account instead, or use **MetaMask / Rabby** for local development. OKX is
+> likewise over-strict with **Sign-In With Ethereum** on `http://localhost` (it wants
+> https and rejects the request) — MetaMask / Rabby work there too, or deploy to an
+> https host (see [DEPLOYMENT.md](DEPLOYMENT.md)).
 >
 > 🔁 **After restarting the chain** (e.g. re-running `pnpm dev:all`), the fresh chain
 > resets account nonces to 0 but your wallet still has the old one → _"Nonce too
@@ -110,7 +113,8 @@ wagmi state is persisted to a cookie and read on the server before render
 
 ### 3. Pluggable backend
 
-No host or database is baked in. Need backend logic — an RPC call with a secret key,
+No database is baked in, and no host lock-in (Nitro deploys anywhere). Need backend
+logic — an RPC call with a secret key,
 your own API, a DB query? Add a
 [server function](https://tanstack.com/start/latest/docs/framework/react/guide/server-functions)
 — see [`apps/web/src/server.ts`](apps/web/src/server.ts) for a working example that
@@ -188,9 +192,9 @@ DB inside server functions when you need persistence.
 
 ### Pick a host
 
-No deploy adapter is baked in — the app stays host-agnostic. To ship to Cloudflare,
-Vercel, Netlify, or self-hosted Node, add your host's adapter as described in
-[DEPLOYMENT.md](DEPLOYMENT.md).
+**Nitro is the deploy adapter** (Node by default; **Vercel & Netlify auto-detected**,
+zero config). For Cloudflare, swap to its plugin. Step-by-step for each host —
+including a one-click Vercel import — is in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ---
 
