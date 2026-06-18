@@ -108,6 +108,18 @@ body {
   cursor: not-allowed;
 }
 
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.siwe-ok {
+  color: #7ee787;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
 .hint {
   color: var(--muted);
   font-size: 0.85rem;

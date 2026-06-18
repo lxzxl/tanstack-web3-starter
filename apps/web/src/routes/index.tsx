@@ -4,6 +4,7 @@ import * as React from "react";
 import { type BaseError, useAccount, useWaitForTransactionReceipt } from "wagmi";
 import { counterAddress, useReadCounterCount, useWriteCounterIncrement } from "../generated";
 import { getServerBlockNumber } from "../server";
+import { SignIn } from "../SignIn";
 
 export const Route = createFileRoute("/")({
   loader: () => getServerBlockNumber(),
@@ -26,6 +27,8 @@ function Home() {
       </header>
 
       <Counter />
+
+      <SignIn />
 
       <footer className="footer">
         <p>
