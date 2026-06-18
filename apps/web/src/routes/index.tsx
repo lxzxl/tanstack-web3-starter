@@ -3,7 +3,7 @@ import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
 import { type BaseError, useAccount, useWaitForTransactionReceipt } from "wagmi";
 import { counterAddress, useReadCounterCount, useWriteCounterIncrement } from "../generated";
-import { getServerBlockNumber } from "../server";
+import { getServerBlockNumber } from "../server-fns";
 import { SignIn } from "../SignIn";
 
 export const Route = createFileRoute("/")({

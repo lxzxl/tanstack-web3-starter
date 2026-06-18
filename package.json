@@ -16,6 +16,7 @@
     "dev:tui": "mprocs",
     "dev:ready": "node scripts/wait-port.mjs 8545 && pnpm sync && pnpm dev",
     "build": "pnpm --filter web run build",
+    "start": "pnpm --filter web run start",
     "typecheck": "pnpm --filter web run typecheck",
     "test": "pnpm --filter contracts run test",
     "lint": "oxlint",

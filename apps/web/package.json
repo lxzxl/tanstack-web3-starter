@@ -8,6 +8,7 @@
     "dev": "vite",
     "prebuild": "pnpm run codegen",
     "build": "vite build",
+    "start": "node .output/server/index.mjs",
     "preview": "vite preview",
     "codegen": "wagmi generate",
     "typecheck": "tsc --noEmit"

@@ -46,18 +46,12 @@ Add an `apps/web/wrangler.jsonc`, then `pnpm --filter web build && cd apps/web &
 
 ## Self-hosted Node
 
-Nitro already targets Node — add a start script and run the built server:
-
-```jsonc
-// apps/web/package.json
-"scripts": { "start": "node .output/server/index.mjs" }
-```
+Nitro targets Node by default, and a `start` script is included:
 
 ```bash
-pnpm --filter web build && pnpm --filter web start
+pnpm build && pnpm start    # serves .output/server/index.mjs
 ```
 
-> 🐛 **Heads up:** with the current Nitro v3 _beta_ the plain-Node target threw a
-> `mod.fetch is not a function` at runtime in our testing (the Vercel / Netlify
-> presets are unaffected). If you need self-hosted Node today, pin a known-good Nitro
-> version or use Vercel / Cloudflare.
+> ⚠️ **Don't name a source file `src/server.ts`** — Nitro reserves that filename as
+> its server entry (it expects a `fetch` export), so SSR 500s with "No fetch handler
+> exported". This starter keeps server functions in `src/server-fns.ts`.

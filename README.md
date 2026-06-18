@@ -117,7 +117,7 @@ No database is baked in, and no host lock-in (Nitro deploys anywhere). Need back
 logic — an RPC call with a secret key,
 your own API, a DB query? Add a
 [server function](https://tanstack.com/start/latest/docs/framework/react/guide/server-functions)
-— see [`apps/web/src/server.ts`](apps/web/src/server.ts) for a working example that
+— see [`apps/web/src/server-fns.ts`](apps/web/src/server-fns.ts) for a working example that
 reads a block **server-side** (shown on the page); and
 [`apps/web/src/auth.ts`](apps/web/src/auth.ts) for **Sign-In With Ethereum** — the
 wallet signature is verified server-side into a signed (HMAC) session cookie. No
