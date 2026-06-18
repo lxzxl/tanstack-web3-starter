@@ -8,6 +8,7 @@
     "chain": "pnpm --filter contracts run chain",
     "compile": "pnpm --filter contracts run compile",
     "deploy:local": "pnpm --filter contracts run deploy",
+    "deploy:sepolia": "pnpm --filter contracts run deploy:sepolia",
     "fund": "pnpm --filter contracts run fund",
     "codegen": "pnpm --filter web run codegen",
     "sync": "pnpm deploy:local && pnpm codegen",

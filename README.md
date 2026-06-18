@@ -174,13 +174,20 @@ This starter uses RainbowKit's `getDefaultConfig`. To switch to
 `apps/web/src/config.ts` and the provider in `apps/web/src/routes/__root.tsx`.
 **The SSR cookie wiring stays exactly the same** — it's wallet-UI agnostic.
 
-### Add a real network
+### Deploy to a testnet (Base Sepolia)
 
-1. Add the chain + a transport in `apps/web/src/config.ts`.
-2. Deploy your contract there and put the address in `apps/web/wagmi.config.ts`
-   under `deployments` (extend it to a per-chain `{ [chainId]: address }` map if
-   you deploy to several networks).
-3. Set `VITE_WALLETCONNECT_PROJECT_ID` in `apps/web/.env`.
+Base Sepolia is already wired into the config. To put `Counter` on it:
+
+1. Get Base Sepolia ETH from a faucet (e.g. [base.org/build/faucet](https://www.base.org/build/faucet)) into a throwaway deployer account.
+2. Copy `packages/contracts/.env.example` → `.env` and set
+   `DEPLOYER_PRIVATE_KEY=0x…` — **testnet-only, never a key with real funds**.
+3. `pnpm deploy:sepolia` — deploys `Counter`, writes `deployments/baseSepolia.json`.
+4. `pnpm codegen` bakes the per-chain address into the hooks.
+5. Commit `packages/contracts/deployments/baseSepolia.json` so the deployed app knows the address.
+
+**Another chain?** Add it to `chains`/`transports` in `apps/web/src/config.ts` and to
+`NETWORKS` in `packages/contracts/scripts/deploy.ts`. Codegen merges every
+`deployments/<network>.json` into a per-chain address map automatically.
 
 ### Add a backend / database
 

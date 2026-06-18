@@ -2,7 +2,7 @@ import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 import { cookieStorage, cookieToInitialState, createStorage, http, serialize } from "wagmi";
-import { base, hardhat, mainnet, sepolia } from "wagmi/chains";
+import { base, baseSepolia, hardhat, mainnet, sepolia } from "wagmi/chains";
 
 /**
  * wagmi config built via RainbowKit's `getDefaultConfig`.
@@ -12,11 +12,12 @@ export function getConfig() {
   return getDefaultConfig({
     appName: "TanStack Web3 Starter",
     projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || "YOUR_PROJECT_ID",
-    chains: [hardhat, sepolia, base, mainnet],
+    chains: [hardhat, baseSepolia, sepolia, base, mainnet],
     storage: createStorage({ storage: cookieStorage }),
     ssr: true,
     transports: {
       [hardhat.id]: http("http://127.0.0.1:8545"),
+      [baseSepolia.id]: http(),
       [sepolia.id]: http(),
       [base.id]: http(),
       [mainnet.id]: http(),

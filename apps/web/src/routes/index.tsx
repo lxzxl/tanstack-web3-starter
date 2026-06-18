@@ -52,8 +52,17 @@ function Home() {
 }
 
 function Counter() {
-  const { isConnected } = useAccount();
-  const { data: count, error, isPending, refetch } = useReadCounterCount();
+  const { isConnected, chainId } = useAccount();
+  // `counterAddress` is a per-chain map — is Counter deployed on the connected chain?
+  const deployedHere = chainId != null && chainId in counterAddress;
+  const {
+    data: count,
+    error,
+    isPending,
+    refetch,
+  } = useReadCounterCount({
+    query: { enabled: deployedHere },
+  });
   const {
     data: hash,
     isPending: isWriting,
@@ -64,10 +73,8 @@ function Counter() {
     hash,
   });
 
-  // A read error almost always means no Counter is deployed at `counterAddress`
-  // on the connected chain — i.e. the node was restarted, or you haven't run
-  // `pnpm sync` yet to deploy + regenerate the baked address.
-  const notDeployed = !!error && !isPending;
+  // Not deployed on this chain (no baked address), or the read failed.
+  const notDeployed = isConnected && (!deployedHere || (!!error && !isPending));
 
   // Refetch the on-chain count once the increment tx confirms.
   React.useEffect(() => {
@@ -77,7 +84,9 @@ function Counter() {
   return (
     <section className="card">
       <span className="card-label">Counter.count()</span>
-      <span className="count">{isPending ? "…" : error ? "—" : count?.toString()}</span>
+      <span className="count">
+        {!isConnected || !deployedHere ? "—" : isPending ? "…" : error ? "—" : count?.toString()}
+      </span>
       <button
         type="button"
         className="btn"
@@ -86,16 +95,12 @@ function Counter() {
       >
         {isWriting ? "Confirm in wallet…" : isConfirming ? "Mining…" : "increment()"}
       </button>
-      {!isConnected && (
-        <p className="hint">
-          Connect a wallet on the <strong>Hardhat (local)</strong> network to send transactions.
-        </p>
-      )}
+      {!isConnected && <p className="hint">Connect a wallet to read and write the counter.</p>}
       {notDeployed && (
         <p className="hint hint-error">
-          No <code>Counter</code> at <code>{counterAddress}</code> on this chain. Run{" "}
-          <code>pnpm chain</code> then <code>pnpm sync</code> to deploy it and regenerate the
-          address.
+          No <code>Counter</code> on this chain{chainId ? ` (id ${chainId})` : ""}. Deploy it:{" "}
+          <code>pnpm sync</code> (local) or <code>pnpm deploy:sepolia</code> (Base Sepolia), then
+          refresh.
         </p>
       )}
       {writeError && !notDeployed && (

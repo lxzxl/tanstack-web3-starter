@@ -7,7 +7,8 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "chain": "hardhat node",
-    "deploy": "hardhat compile && node scripts/deploy.ts",
+    "deploy": "hardhat compile && node --env-file-if-exists=.env scripts/deploy.ts localhost",
+    "deploy:sepolia": "hardhat compile && node --env-file-if-exists=.env scripts/deploy.ts baseSepolia",
     "fund": "node scripts/fund.ts",
     "typecheck": "tsc --noEmit"
   },
