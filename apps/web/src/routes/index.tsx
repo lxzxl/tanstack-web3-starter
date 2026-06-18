@@ -1,7 +1,7 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import * as React from "react";
-import { type BaseError, useAccount, useWaitForTransactionReceipt } from "wagmi";
+import { type BaseError, useAccount, useBlockNumber, useWaitForTransactionReceipt } from "wagmi";
 import { counterAddress, useReadCounterCount, useWriteCounterIncrement } from "../generated";
 import { getServerBlockNumber } from "../server-fns";
 import { SignIn } from "../SignIn";
@@ -63,6 +63,8 @@ function Counter() {
   } = useReadCounterCount({
     query: { enabled: deployedHere },
   });
+  // Watch new blocks so the read stays live (see the effect below).
+  const { data: blockNumber } = useBlockNumber({ watch: deployedHere });
   const {
     data: hash,
     isPending: isWriting,
@@ -76,10 +78,12 @@ function Counter() {
   // Not deployed on this chain (no baked address), or the read failed.
   const notDeployed = isConnected && (!deployedHere || (!!error && !isPending));
 
-  // Refetch the on-chain count once the increment tx confirms.
+  // Refetch on each new block and the moment the tx confirms. Block-watching
+  // covers RPC state-propagation lag, where a single post-confirm read can still
+  // return the stale value (common on load-balanced public testnet RPCs).
   React.useEffect(() => {
-    if (isConfirmed) refetch();
-  }, [isConfirmed, refetch]);
+    if (deployedHere) refetch();
+  }, [blockNumber, isConfirmed, deployedHere, refetch]);
 
   return (
     <section className="card">
