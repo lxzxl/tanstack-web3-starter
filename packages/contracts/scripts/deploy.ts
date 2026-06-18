@@ -41,7 +41,15 @@ if (!net.key) {
   );
 }
 
-const account = privateKeyToAccount(net.key as Hex);
+// Tolerate a missing 0x prefix / stray whitespace, then validate with a clear error.
+const rawKey = net.key.trim().replace(/^(0x)?/, "0x");
+if (!/^0x[0-9a-fA-F]{64}$/.test(rawKey)) {
+  throw new Error(
+    `DEPLOYER_PRIVATE_KEY is malformed: expected a 32-byte hex key (0x + 64 hex chars), ` +
+      `got ${rawKey.length - 2} hex chars. Check packages/contracts/.env — no quotes, no spaces.`,
+  );
+}
+const account = privateKeyToAccount(rawKey as Hex);
 const artifact = JSON.parse(
   readFileSync(join(root, "artifacts/contracts/Counter.sol/Counter.json"), "utf8"),
 ) as { abi: Abi; bytecode: Hex };
