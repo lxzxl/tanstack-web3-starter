@@ -5,6 +5,7 @@ import { type BaseError, useAccount, useBlockNumber, useWaitForTransactionReceip
 import { counterAddress, useReadCounterCount, useWriteCounterIncrement } from "../generated";
 import { getServerBlockNumber } from "../server-fns";
 import { SignIn } from "../SignIn";
+import { ThemeToggle } from "../theme";
 import { useToast } from "../toast";
 
 export const Route = createFileRoute("/")({
@@ -21,10 +22,13 @@ function Home() {
           <h1>TanStack Web3 Starter</h1>
           <p className="subtitle">TanStack Start · wagmi · Hardhat 3 — typed end-to-end</p>
         </div>
-        {/* Wallet UI is client-only to avoid SSR hydration mismatch */}
-        <ClientOnly fallback={null}>
-          <ConnectButton />
-        </ClientOnly>
+        <div className="header-actions">
+          <ThemeToggle />
+          {/* Wallet UI is client-only to avoid SSR hydration mismatch */}
+          <ClientOnly fallback={null}>
+            <ConnectButton />
+          </ClientOnly>
+        </div>
       </header>
 
       <Counter />

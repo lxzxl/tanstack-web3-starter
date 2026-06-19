@@ -1,10 +1,24 @@
-:root {
+:root,
+:root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #0b0d12;
+  --bg-glow: #1a1340;
   --panel: #14171f;
   --border: #232733;
   --text: #e7e9ee;
   --muted: #8b93a7;
+  --accent: #7c5cff;
+  --accent-text: #ffffff;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f8fa;
+  --bg-glow: #ece7ff;
+  --panel: #ffffff;
+  --border: #e3e6ec;
+  --text: #1a1d24;
+  --muted: #5b6270;
   --accent: #7c5cff;
   --accent-text: #ffffff;
 }
@@ -20,7 +34,7 @@ body {
 }
 
 body {
-  background: radial-gradient(1200px 600px at 50% -10%, #1a1340 0%, var(--bg) 55%);
+  background: radial-gradient(1200px 600px at 50% -10%, var(--bg-glow) 0%, var(--bg) 55%);
   color: var(--text);
   font-family:
     ui-sans-serif,
@@ -184,6 +198,28 @@ code {
 
 .toast-error {
   border-color: rgba(255, 138, 138, 0.5);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-toggle {
+  appearance: none;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 11px;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
 }
 
 @keyframes toast-in {
