@@ -29,6 +29,9 @@ jobs:
       - name: Contract tests (Hardhat 3)
         run: pnpm test
 
+      - name: Frontend tests (Vitest)
+        run: pnpm --filter web run test
+
       # Build first — it runs codegen and generates the route tree, which the
       # typecheck depends on (both are gitignored, generated artifacts).
       - name: Build (codegen + SSR)
