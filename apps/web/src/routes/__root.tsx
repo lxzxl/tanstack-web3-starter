@@ -6,6 +6,7 @@ import * as React from "react";
 import { deserialize, type State, WagmiProvider } from "wagmi";
 import { getConfig, getWagmiStateSSR } from "../config";
 import appCss from "../styles.css?url";
+import { ToastProvider } from "../toast";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
@@ -35,7 +36,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <WagmiProvider config={config} initialState={wagmiState}>
           <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider>{children}</RainbowKitProvider>
+            <RainbowKitProvider>
+              <ToastProvider>{children}</ToastProvider>
+            </RainbowKitProvider>
           </QueryClientProvider>
         </WagmiProvider>
         <Scripts />

@@ -5,6 +5,7 @@ import { type BaseError, useAccount, useBlockNumber, useWaitForTransactionReceip
 import { counterAddress, useReadCounterCount, useWriteCounterIncrement } from "../generated";
 import { getServerBlockNumber } from "../server-fns";
 import { SignIn } from "../SignIn";
+import { useToast } from "../toast";
 
 export const Route = createFileRoute("/")({
   loader: () => getServerBlockNumber(),
@@ -53,6 +54,7 @@ function Home() {
 
 function Counter() {
   const { isConnected, chainId } = useAccount();
+  const toast = useToast();
   // `counterAddress` is a per-chain map — is Counter deployed on the connected chain?
   const deployedHere = chainId != null && chainId in counterAddress;
   const {
@@ -85,6 +87,11 @@ function Counter() {
     if (deployedHere) refetch();
   }, [blockNumber, isConfirmed, deployedHere, refetch]);
 
+  // Toast once when the increment tx confirms.
+  React.useEffect(() => {
+    if (isConfirmed) toast("success", "Counter incremented ✓");
+  }, [isConfirmed, toast]);
+
   return (
     <section className="card">
       <span className="card-label">Counter.count()</span>
@@ -95,7 +102,9 @@ function Counter() {
         type="button"
         className="btn"
         disabled={!isConnected || notDeployed || isWriting || isConfirming}
-        onClick={() => writeContract({})}
+        onClick={() =>
+          writeContract({}, { onSuccess: () => toast("info", "Transaction sent — mining…") })
+        }
       >
         {isWriting ? "Confirm in wallet…" : isConfirming ? "Mining…" : "increment()"}
       </button>
