@@ -23,7 +23,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "viem": "^2",
-    "wagmi": "^2"
+    "wagmi": "^3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
