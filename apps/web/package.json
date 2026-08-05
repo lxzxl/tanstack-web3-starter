@@ -17,11 +17,11 @@
   "dependencies": {
     "@rainbow-me/rainbowkit": "^2",
     "@tanstack/react-query": "^5",
-    "@tanstack/react-router": "^1.145.7",
+    "@tanstack/react-router": "^1.170.18",
     "@tanstack/react-router-ssr-query": "^1.145.7",
-    "@tanstack/react-start": "^1.166.16",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "@tanstack/react-start": "^1.168.34",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "viem": "^2",
     "wagmi": "^2"
   },
@@ -29,14 +29,14 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^24",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "@vitejs/plugin-react": "^6.0.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
     "@wagmi/cli": "^2",
     "jsdom": "^29.1.1",
     "nitro": "3.0.260610-beta",
     "typescript": "^5",
     "vite": "^8",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.10"
   }
 }
